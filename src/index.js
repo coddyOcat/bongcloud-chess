@@ -17,7 +17,9 @@ const GlobalCss = createGlobalStyle`
     --enter-form-background: #009fb5;
     --enter-button-background: #008da1;
     --enter-button-interact-background: #007989;
-
+	
+    --board-width: 90vh;
+    
     --dark-square-background: #ce4047;
     --light-square-background: #f4d9bf;
 

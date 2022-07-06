@@ -36,6 +36,7 @@ export default function UserEnter() {
 			let validTable = true // TODO: fetch db and set localStorage whitePlayer
 			if (validTable) {
 				localStorage.setItem("blackPlayer", player);
+				localStorage.setItem("side", "black")
 				// TODO: update db numTable, blackPlayer
 				console.log("join", numTable, player)
 				navigate("/table")
@@ -63,6 +64,7 @@ export default function UserEnter() {
 			}, 500)
 		} else {
 			localStorage.setItem("whitePlayer", player);
+			localStorage.setItem("side", "white")
 			// TODO: numTable = "0" so random numTable (6 digits) and create table
 			console.log("create", numTable, player)
 			navigate("/table")

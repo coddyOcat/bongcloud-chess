@@ -31,6 +31,7 @@ export default function Enter() {
 	localStorage.setItem("numTable", "0")
 	localStorage.setItem("whitePlayer", "");
 	localStorage.setItem("blackPlayer", "");
+	localStorage.setItem("side", "")
 
 	const navigate = useNavigate()
 
