@@ -14,6 +14,10 @@ const EnterBox = styled.div`
   border-radius: 2rem;
   box-shadow: 0.5rem 1rem black;
   padding-bottom: 3rem;
+  
+  //@media only screen and (max-width: 1000px) {
+  //  padding-bottom: 2rem;
+  //}
 `
 
 const Or = styled.div`
@@ -25,6 +29,10 @@ const Or = styled.div`
   text-shadow: 0.2rem 0.2rem black;
   margin: 2rem 0 1rem 0;
   user-select: none;
+  
+  @media only screen and (max-width: 1000px) {
+    font-size: 1.5rem;
+  }
 `
 
 export default function Enter() {

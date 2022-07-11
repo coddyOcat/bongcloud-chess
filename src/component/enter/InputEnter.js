@@ -16,6 +16,12 @@ const Input = styled.input`
   ::placeholder {
     color: var(--c, gray);
   }
+  
+  @media only screen and (max-width: 1000px) {
+    width: 70vw;
+    height: 5rem;
+    font-size: 2rem;
+  }
 `
 
 export default function InputEnter({type, placeholder}) {
