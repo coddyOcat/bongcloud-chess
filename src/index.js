@@ -13,15 +13,20 @@ const GlobalCss = createGlobalStyle`
 
   :root {
     --main-background: #006474;
+    --transparent-background: #00000030;
 
     --enter-form-background: #009fb5;
     --enter-button-background: #008da1;
     --enter-button-interact-background: #007989;
-	
-    --board-width: 90vh;
-    
+
     --dark-square-background: #ce4047;
     --light-square-background: #f4d9bf;
+
+    --dark-player-background: #27211b;
+    --light-player-background: #ffffff;
+
+    --dark-timer-background: #27211b;
+    --light-timer-background: #ffffff;
 
     --dark-text: #ce4047;
     --light-text: #f4d9bf;
@@ -31,6 +36,14 @@ const GlobalCss = createGlobalStyle`
 
     --target-enemy-background: #ed4628cc;
     --target-no-enemy-background: #cc9a62cc;
+
+    
+    @media only screen and (min-width: 1000px) {
+      --board-width: 95vh;
+    }
+    @media only screen and (max-width: 1000px) {
+      --board-width: 95vw;
+    }
   }
 
   html {
@@ -42,7 +55,6 @@ const GlobalCss = createGlobalStyle`
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    padding: 1.5rem;
     background-color: var(--main-background);
   }
 

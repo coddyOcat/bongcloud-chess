@@ -23,6 +23,8 @@ const SquareBody = styled.div`
   justify-content: center;
   width: calc(var(--board-width) / 8);
   height: calc(var(--board-width) / 8);
+  min-width: 45px;
+  min-height: 45px;
 `
 
 export default function Square({children, square, squareColor}) {

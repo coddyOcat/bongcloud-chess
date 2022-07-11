@@ -5,7 +5,17 @@ import Board from "./Board";
 import styled from "styled-components";
 
 const ChessContainer = styled.div`
-
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  overflow: hidden;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  @media only screen and (max-width: 1000px) {
+    flex-direction: column;
+    justify-content: center;
+  }
 `
 
 export default function Chess() {
