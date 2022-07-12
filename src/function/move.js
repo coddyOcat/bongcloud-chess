@@ -2,7 +2,7 @@ import {addEatMove, addJumpMove, addLineMove, addLineMoveAndEat, getColumn, getR
 
 const PawnMove = (
 	square,
-	listTargetZ,
+	listTargetS,
 	position,
 	side,
 	setPosition,
@@ -30,7 +30,7 @@ const PawnMove = (
 
 	addLineMove(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -39,7 +39,7 @@ const PawnMove = (
 	);
 	addEatMove(
 		listEatMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -50,7 +50,7 @@ const PawnMove = (
 
 const RookMove = (
 	square,
-	listTargetZ,
+	listTargetS,
 	position,
 	side,
 	setPosition,
@@ -62,7 +62,7 @@ const RookMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -74,7 +74,7 @@ const RookMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -86,7 +86,7 @@ const RookMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -98,7 +98,7 @@ const RookMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -109,7 +109,7 @@ const RookMove = (
 
 const BishopMove = (
 	square,
-	listTargetZ,
+	listTargetS,
 	position,
 	side,
 	setPosition,
@@ -121,7 +121,7 @@ const BishopMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -133,7 +133,7 @@ const BishopMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -145,7 +145,7 @@ const BishopMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -157,7 +157,7 @@ const BishopMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -168,7 +168,7 @@ const BishopMove = (
 
 const KnightMove = (
 	square,
-	listTargetZ,
+	listTargetS,
 	position,
 	side,
 	setPosition,
@@ -187,7 +187,7 @@ const KnightMove = (
 
 	addJumpMove(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -198,7 +198,7 @@ const KnightMove = (
 
 const QueenMove = (
 	square,
-	listTargetZ,
+	listTargetS,
 	position,
 	side,
 	setPosition,
@@ -210,7 +210,7 @@ const QueenMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -222,7 +222,7 @@ const QueenMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -234,7 +234,7 @@ const QueenMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -246,7 +246,7 @@ const QueenMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -258,7 +258,7 @@ const QueenMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -270,7 +270,7 @@ const QueenMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -282,7 +282,7 @@ const QueenMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -294,7 +294,7 @@ const QueenMove = (
 	});
 	addLineMoveAndEat(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -305,7 +305,7 @@ const QueenMove = (
 
 const KingMove = (
 	square,
-	listTargetZ,
+	listTargetS,
 	position,
 	side,
 	setPosition,
@@ -323,7 +323,7 @@ const KingMove = (
 	];
 	addJumpMove(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -339,52 +339,52 @@ export const listTarget = (
 	setPosition,
 	setLastMove
 ) => {
-	const listTargetZ = [];
+	const listTargetS = [];
 	var side = "white";
 	switch (piece) {
 		case "P":
-			PawnMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			PawnMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "R":
-			RookMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			RookMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "N":
-			KnightMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			KnightMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "B":
-			BishopMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			BishopMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "Q":
-			QueenMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			QueenMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "K":
-			KingMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			KingMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "p":
 			side = "black";
-			PawnMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			PawnMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "r":
 			side = "black";
-			RookMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			RookMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "n":
 			side = "black";
-			KnightMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			KnightMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "b":
 			side = "black";
-			BishopMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			BishopMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "q":
 			side = "black";
-			QueenMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			QueenMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		case "k":
 			side = "black";
-			KingMove(square, listTargetZ, position, side, setPosition, setLastMove);
+			KingMove(square, listTargetS, position, side, setPosition, setLastMove);
 			break;
 		default:
 	}
-	return listTargetZ;
+	return listTargetS;
 };

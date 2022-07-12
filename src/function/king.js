@@ -242,17 +242,17 @@ const KingBlock = (square, side, position) => {
 	return addBlock(listBlock, position);
 };
 
-const Castle = () => {};
+// const Castle = () => {};
 
 const KingMove = (
 	square,
-	listTargetZ,
+	listTargetS,
 	position,
 	side,
 	setPosition,
 	setLastMove
 ) => {
-	var listMainMove = [
+	const listMainMove = [
 		getColumn(square, -1) + getRow(square, -1),
 		getColumn(square, -1) + getRow(square, 0),
 		getColumn(square, -1) + getRow(square, 1),
@@ -266,14 +266,14 @@ const KingMove = (
 	const listBlock = EnemyBlock(side, position);
 
 	listBlock.forEach((block) => {
-		var index = listMainMove.indexOf(block.substring(1));
+		const index = listMainMove.indexOf(block.substring(1));
 		if (index !== -1) {
 			listMainMove.splice(index, 1);
 		}
 	});
 	addJumpMove(
 		listMainMove,
-		listTargetZ,
+		listTargetS,
 		square,
 		position,
 		side,
@@ -438,12 +438,12 @@ export const listKingTarget = (
 	setPosition,
 	setLastMove
 ) => {
-	const listTargetZ = [];
-	var side = "white";
+	const listTargetS = [];
+	let side = "white";
 	if (piece === "k") {
 		side = "black";
 	}
-	KingMove(square, listTargetZ, position, side, setPosition, setLastMove);
+	KingMove(square, listTargetS, position, side, setPosition, setLastMove);
 
-	return listTargetZ;
+	return listTargetS;
 };

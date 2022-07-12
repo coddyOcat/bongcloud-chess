@@ -4,7 +4,6 @@ import ButtonEnter from "./ButtonEnter";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {useGlobal} from "../../context/index.context";
-import {type} from "@testing-library/user-event/dist/type";
 
 const EnterBox = styled.div`
   position: absolute;
@@ -52,9 +51,6 @@ export default function Enter() {
 			localStorage.setItem("whitePlayer", "");
 			localStorage.setItem("blackPlayer", "");
 			localStorage.setItem("side", "")
-			localStorage.setItem("sideWin", "")
-			localStorage.setItem("sideMove", "")
-			localStorage.setItem("sideWin", "")
 		}
 	});
 

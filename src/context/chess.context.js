@@ -1,5 +1,10 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {customPieces} from "../resource/piece";
+import {realtime, updateTable} from "../firebase/db";
+import {onValue, ref} from "firebase/database"
+import {listKingTarget} from "../function/king";
+import {listTarget} from "../function/move";
+import {decodePosition, encodePosition} from "../function/func";
 
 const ChessContext = React.createContext();
 
@@ -19,7 +24,11 @@ export const ChessProvider = ({children}) => {
 	const customChessPieces = customPieces("california");
 
 	// game state
-	const position = {
+	const numTable = localStorage.getItem("numTable")
+	const [whitePlayer, setWhitePlayer] = useState("")
+	const [blackPlayer, setBlackPlayer] = useState("")
+	const side = localStorage.getItem("side")
+	const [position, setPosition] = useState({
 		a1: "R",
 		a2: "P",
 		a3: "1",
@@ -84,13 +93,82 @@ export const ChessProvider = ({children}) => {
 		h6: "1",
 		h7: "p",
 		h8: "r",
-	};
-	const [sideWin, setSideWin] = useState(localStorage.getItem("sideWin"));
-	const [sideMove, setSideMove] = useState(localStorage.getItem("sideMove"));
+	});
+	const [sideWin, setSideWin] = useState("");
+	const [sideMove, setSideMove] = useState("");
+	const [lastMove, setLastMove] = useState("")
+	const [historyMove, setHistoryMove] = useState([]);
 
-	const onPieceClick = (event) => {
-		// if (sideWin !== "") return;
-		// if (sideMove !== side) return;
+	useEffect(() => {
+		const valueRef = ref(realtime, numTable)
+		onValue(valueRef, (snapshot) => {
+			const data = snapshot.val()
+			if (whitePlayer !== data.whitePlayer) {
+				setWhitePlayer(data.whitePlayer)
+				localStorage.setItem("whitePlayer", whitePlayer)
+			}
+			if (blackPlayer !== data.blackPlayer) {
+				setBlackPlayer(data.blackPlayer)
+				localStorage.setItem("blackPlayer", blackPlayer)
+			}
+			if (sideMove !== data.sideMove) {
+				setSideMove(data.sideMove)
+			}
+			if (sideWin !== data.sideWin) {
+				setSideWin(data.sideWin)
+			}
+			if (encodePosition(position) !== data.position) {
+				decodePosition(data.position, position, setPosition)
+			}
+		})
+	})
+
+	useEffect(() => {
+		if (lastMove !== "") {
+			if (sideMove === "white") {
+				let opMove = "black"
+				updateTable(parseInt(numTable), {sideMove: opMove})
+			}
+			if (sideMove === "black") {
+				let opMove = "white"
+				updateTable(parseInt(numTable), {sideMove: opMove})
+			}
+			historyMove.push(lastMove);
+			setHistoryMove([...historyMove]);
+		}
+	}, [lastMove])
+
+	const onPieceClick = async (event) => {
+		if (sideWin !== "") return;
+		if (sideMove !== side) return;
+		if (side === "white" && event.currentTarget.getAttribute("data-piece") === event.currentTarget.getAttribute("data-piece").toLowerCase()) {
+			return;
+		}
+		if (side === "black" && event.currentTarget.getAttribute("data-piece") === event.currentTarget.getAttribute("data-piece").toUpperCase()) {
+			return;
+		}
+		const parent = event.currentTarget.parentNode;
+		if (parent.style["background-color"] === "var(--piece-selected-background)") {
+			parent.style["background-color"] = "";
+			document.querySelectorAll(`div[target-square]`).forEach((x) => {
+				x.parentNode.removeChild(x);
+			});
+		} else {
+			document.querySelectorAll(`div[data-piece]`).forEach((x) => {
+				x.parentNode.style["background-color"] = "";
+			});
+			document.querySelectorAll(`div[target-square]`).forEach((x) => {
+				x.parentNode.removeChild(x);
+			});
+			parent.style["background-color"] = "var(--piece-selected-background)";
+			const square = parent.parentNode.getAttribute("data-square");
+			const piece = event.currentTarget.getAttribute("data-piece");
+			if (piece === "K" || piece === "k") {
+				listKingTarget(square, piece, position, setPosition, setLastMove).forEach((element) => parent.appendChild(element));
+			} else {
+				listTarget(square, piece, position, setPosition, setLastMove).forEach((element) => parent.appendChild(element));
+			}
+		}
 	}
 
 	return (<ChessContext.Provider
@@ -99,7 +177,11 @@ export const ChessProvider = ({children}) => {
 
 			customChessPieces,
 
+			whitePlayer, blackPlayer, side,
+
 			position,
+
+			sideWin, sideMove,
 
 			onPieceClick
 		}}

@@ -22,7 +22,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
-const realtime = getDatabase(app)
+export const realtime = getDatabase(app)
 // const analytics = getAnalytics(app);
 
 export const createTable = async (numTable, whitePlayer) => {
@@ -91,13 +91,3 @@ export const updateTable = async (numTable, data) => {
 		return false;
 	}
 };
-
-export const fetchTable = async (numTable) => {
-	const q = query(collection(firestore, "table"), where("numTable", "==", numTable));
-	const querySnapshot = await getDocs(q);
-	const lists = [];
-	querySnapshot.forEach((doc) => {
-		lists.push(doc.data());
-	});
-	return lists[0];
-}

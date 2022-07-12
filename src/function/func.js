@@ -1,4 +1,5 @@
-import {customPieces} from "../assets/pieces";
+import {customPieces} from "../resource/piece";
+import {updateTable} from "../firebase/db";
 
 export const columnKey = ["_", "a", "b", "c", "d", "e", "f", "g", "h"];
 export const column = {
@@ -27,7 +28,32 @@ export const WhiteSide = ["P", "R", "N", "B", "Q", "K"];
 export const BlackSide = ["p", "r", "n", "b", "q", "k"];
 export const BothSide = [...WhiteSide, ...BlackSide];
 
-export const movePieceToTarget = (event, position, setPosition, setLastMove) => {
+export const encodePosition = (position) => {
+	let strPos = "";
+	const arrInd = [...Array(8).keys()];
+	arrInd.forEach((r) => {
+		arrInd.forEach((c) => {
+			const square = columnKey[c + 1] + (r + 1);
+			const piece = position[square];
+			strPos += piece;
+		});
+	});
+	return strPos;
+};
+
+export const decodePosition = (strPos, position, setPosition) => {
+	const arrInd = [...Array(8).keys()];
+	arrInd.forEach((r) => {
+		arrInd.forEach((c) => {
+			const square = columnKey[c + 1] + (r + 1);
+			const ind = c + r * 8;
+			position[square] = strPos[ind];
+		});
+	});
+	setPosition({...position});
+};
+
+export const movePieceToTarget = async (event, position, setPosition, setLastMove) => {
 	const targetDiv = event.currentTarget;
 	const sourceDiv = targetDiv.parentNode.parentNode;
 	const pieceDiv = targetDiv.parentNode.querySelector(`div[data-piece]`);
@@ -38,7 +64,11 @@ export const movePieceToTarget = (event, position, setPosition, setLastMove) => 
 
 	position[targetSquare] = position[sourceSquare];
 	position[sourceSquare] = "1";
-	setPosition({...position});
+	const data = {
+		position: encodePosition(position)
+	};
+	// console.log(data, position[targetSquare], position[sourceSquare])
+	await updateTable(parseInt(localStorage.getItem("numTable")), data);
 	document.querySelectorAll(`div[target-square]`).forEach((x) => {
 		x.parentNode.style.backgroundColor = "";
 		x.parentNode.removeChild(x);
@@ -134,21 +164,21 @@ export const newElementPromoteOption = (side, square, position, setPosition, set
 	return newDiv;
 };
 
-export const addLineMove = (listMove, listTargetZ, square, position, side, setPosition, setLastMove) => {
+export const addLineMove = (listMove, listTargetS, square, position, side, setPosition, setLastMove) => {
 	for (let i = 0; i < listMove.length; i++) {
 		let targetSquare = listMove[i];
 		if (targetSquare.length !== 2) {
 			break;
 		}
 		if (!BothSide.find((x) => x === position[targetSquare])) {
-			listTargetZ.push(newElementTarget(square, targetSquare, false, side, position, setPosition, setLastMove));
+			listTargetS.push(newElementTarget(square, targetSquare, false, side, position, setPosition, setLastMove));
 		} else {
 			break;
 		}
 	}
 };
 
-export const addJumpMove = (listMove, listTargetZ, square, position, side, setPosition, setLastMove) => {
+export const addJumpMove = (listMove, listTargetS, square, position, side, setPosition, setLastMove) => {
 	for (let i = 0; i < listMove.length; i++) {
 		let targetSquare = listMove[i];
 		if (targetSquare.length !== 2) {
@@ -157,16 +187,15 @@ export const addJumpMove = (listMove, listTargetZ, square, position, side, setPo
 		const Side = side === "white" ? WhiteSide : BlackSide;
 		const OpSide = side === "white" ? BlackSide : WhiteSide;
 		if (OpSide.find((x) => x === position[targetSquare])) {
-			listTargetZ.push(newElementTarget(square, targetSquare, true, side, position, setPosition, setLastMove));
+			listTargetS.push(newElementTarget(square, targetSquare, true, side, position, setPosition, setLastMove));
 		} else if (Side.find((x) => x === position[targetSquare])) {
-			continue;
 		} else {
-			listTargetZ.push(newElementTarget(square, targetSquare, false, side, position, setPosition, setLastMove));
+			listTargetS.push(newElementTarget(square, targetSquare, false, side, position, setPosition, setLastMove));
 		}
 	}
 };
 
-export const addEatMove = (listMove, listTargetZ, square, position, side, setPosition, setLastMove) => {
+export const addEatMove = (listMove, listTargetS, square, position, side, setPosition, setLastMove) => {
 	for (let i = 0; i < listMove.length; i++) {
 		let targetSquare = listMove[i];
 		if (targetSquare.length !== 2) {
@@ -174,12 +203,12 @@ export const addEatMove = (listMove, listTargetZ, square, position, side, setPos
 		}
 		const OpSide = side === "white" ? BlackSide : WhiteSide;
 		if (OpSide.find((x) => x === position[targetSquare])) {
-			listTargetZ.push(newElementTarget(square, targetSquare, true, side, position, setPosition, setLastMove));
+			listTargetS.push(newElementTarget(square, targetSquare, true, side, position, setPosition, setLastMove));
 		}
 	}
 };
 
-export const addLineMoveAndEat = (listMove, listTargetZ, square, position, side, setPosition, setLastMove) => {
+export const addLineMoveAndEat = (listMove, listTargetS, square, position, side, setPosition, setLastMove) => {
 	for (let i = 0; i < listMove.length; i++) {
 		let targetSquare = listMove[i];
 		if (targetSquare.length !== 2) {
@@ -188,12 +217,12 @@ export const addLineMoveAndEat = (listMove, listTargetZ, square, position, side,
 		const Side = side === "white" ? WhiteSide : BlackSide;
 		const OpSide = side === "white" ? BlackSide : WhiteSide;
 		if (OpSide.find((x) => x === position[targetSquare])) {
-			listTargetZ.push(newElementTarget(square, targetSquare, true, side, position, setPosition, setLastMove));
+			listTargetS.push(newElementTarget(square, targetSquare, true, side, position, setPosition, setLastMove));
 			break;
 		} else if (Side.find((x) => x === position[targetSquare])) {
 			break;
 		} else {
-			listTargetZ.push(newElementTarget(square, targetSquare, false, side, position, setPosition, setLastMove));
+			listTargetS.push(newElementTarget(square, targetSquare, false, side, position, setPosition, setLastMove));
 		}
 	}
 };

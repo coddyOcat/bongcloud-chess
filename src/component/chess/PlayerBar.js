@@ -190,22 +190,14 @@ export default function PlayerBar() {
 	const navigate = useNavigate()
 
 	const numTable = localStorage.getItem("numTable");
-	const side = localStorage.getItem("side")
-	const whitePlayer = localStorage.getItem("whitePlayer")
-	const blackPlayer = localStorage.getItem("blackPlayer")
-	const sideWin = localStorage.getItem("sideWin")
-	const sideMove = localStorage.getItem("sideMove")
 
-	const {customChessPieces} = useChess();
+	const {customChessPieces, whitePlayer, blackPlayer, side, sideWin, sideMove} = useChess();
 
 	const handleGetOut = () => {
 		localStorage.setItem("numTable", "0")
 		localStorage.setItem("whitePlayer", "");
 		localStorage.setItem("blackPlayer", "");
 		localStorage.setItem("side", "")
-		localStorage.setItem("sideWin", "")
-		localStorage.setItem("sideMove", "")
-		localStorage.setItem("sideWin", "")
 		navigate("/")
 	}
 
