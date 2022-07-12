@@ -53,6 +53,7 @@ export default function Enter() {
 			localStorage.setItem("blackPlayer", "");
 			localStorage.setItem("side", "")
 			localStorage.setItem("sideWin", "")
+			localStorage.setItem("sideMove", "")
 		}
 	});
 

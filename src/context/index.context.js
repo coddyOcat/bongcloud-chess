@@ -1,11 +1,12 @@
-import React, {useContext} from "react";
-import {createTable, findNotFullTable, updateTable} from "../firebase/db";
+import React, {useContext, useState} from "react";
+import {createTable, fetchTable, findNotFullTable, updateTable} from "../firebase/db";
 
 const GlobalContext = React.createContext();
 
 export const useGlobal = () => useContext(GlobalContext)
 
 export const GlobalProvider = ({children}) => {
+	const [updateState, setUpdateState] = useState(0)
 	const createRoomApi = async () => {
 		const whitePlayer = localStorage.getItem("whitePlayer")
 		let numTable = Math.floor(Math.random() * 1000000);
@@ -32,11 +33,24 @@ export const GlobalProvider = ({children}) => {
 		const blackPlayer = localStorage.getItem("blackPlayer")
 		const numTable = parseInt(localStorage.getItem("numTable"))
 
-		await updateTable(numTable, {blackPlayer: blackPlayer})
+		await updateTable(numTable, {blackPlayer: blackPlayer, sideMove: "white"})
 	}
+
+	const fetchRoomApi = async () => {
+		const numTable = parseInt(localStorage.getItem("numTable"))
+
+		const data = await fetchTable(numTable)
+
+		localStorage.setItem("whitePlayer", data.whitePlayer)
+		localStorage.setItem("blackPlayer", data.blackPlayer)
+		localStorage.setItem("sideMove", data.sideMove)
+
+		setUpdateState(updateState + 1)
+	}
+
 	return (<GlobalContext.Provider
 		value={{
-			createRoomApi, checkValidRoomApi, joinRoomApi
+			createRoomApi, checkValidRoomApi, joinRoomApi, fetchRoomApi
 		}}
 	>
 		{children}

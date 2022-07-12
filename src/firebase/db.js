@@ -91,3 +91,13 @@ export const updateTable = async (numTable, data) => {
 		return false;
 	}
 };
+
+export const fetchTable = async (numTable) => {
+	const q = query(collection(firestore, "table"), where("numTable", "==", numTable));
+	const querySnapshot = await getDocs(q);
+	const lists = [];
+	querySnapshot.forEach((doc) => {
+		lists.push(doc.data());
+	});
+	return lists[0];
+}

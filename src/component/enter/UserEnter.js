@@ -82,7 +82,6 @@ export default function UserEnter() {
 			}
 			localStorage.setItem("whitePlayer", player);
 			localStorage.setItem("side", "white")
-			// TODO: numTable = "0" so random numTable (6 digits) and create table
 			await createRoomApi()
 			navigate("/table")
 		}
