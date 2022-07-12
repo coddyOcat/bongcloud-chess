@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import {useChess} from "../../context/chess.context";
+import getOut from "../../media/getout.png"
+import {useNavigate} from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -28,6 +30,17 @@ const TableText = styled.div`
   padding: 20px;
   @media only screen and (max-width: 1000px) {
     font-size: 1rem;
+  }
+`
+
+const TableOut = styled.img`
+  margin-left: 10px;
+  width: 1rem;
+  filter: brightness(0) invert(1);
+  cursor: pointer;
+  @media only screen and (max-width: 1000px) {
+    margin-left: 5px;
+    width: 0.7rem;
   }
 `
 
@@ -60,8 +73,35 @@ const Side = styled.div`
   }
 `
 
-const WaitingPlayer = styled.p`
-  width: 10rem;
+const WaitingPlayer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: left;
+`
+
+const Dot = styled.div`
+  background-color: white;
+  border-radius: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin: 0 0.25rem;
+  
+  animation: bounceAnimation 0.5s linear infinite;
+  animation-delay: ${(props) => props.delay};
+  
+  @keyframes bounceAnimation {
+    0% {
+      margin-bottom: 0;
+    }
+
+    50% {
+      margin-bottom: 1rem;
+    }
+
+    100% {
+      margin-bottom: 0;
+    }
+  }
 `
 
 const Player = styled.div`
@@ -70,18 +110,21 @@ const Player = styled.div`
   justify-content: left;
   align-items: center;
   padding: 2rem;
-  width: 70%;
+  width: 30rem;
+  overflow: hidden;
+  margin-bottom: 5px;
 
   @media only screen and (max-width: 1000px) {
     padding: 0;
+    width: 7rem;
   }
 `
 
-const PlayerName = styled.p`
-  width: fit-content;
-  font-size: 2rem;
+const PlayerName = styled.div`
+  width: 100px;
+  font-size: 3rem;
   color: white;
-
+  text-overflow: ellipsis;
   @media only screen and (max-width: 1000px) {
     font-size: 1rem;
   }
@@ -90,7 +133,7 @@ const PlayerName = styled.p`
 const Avatar = styled.div`
   box-sizing: border-box;
   margin-right: 10px;
-  width: 30%;
+  width: 8rem;
   aspect-ratio: 1/1;
   border: 10px solid;
   border-color: ${props => props.color === `white` ? `var(--light-player-background)` : `var(--dark-player-background)`};
@@ -98,6 +141,13 @@ const Avatar = styled.div`
   padding: 10px;
   background-size: contain;
   background-image: url(${props => props.image});
+  background-color: ${props => props.color === `white` ? `#d7d7d7` : `gray`};
+
+  @media only screen and (max-width: 1000px) {
+    width: 2rem;
+    border: 3px solid;
+    border-color: ${props => props.color === `white` ? `var(--light-player-background)` : `var(--dark-player-background)`};
+  }
 `
 
 const Timer = styled.div`
@@ -136,17 +186,29 @@ const Timer = styled.div`
 `
 
 export default function PlayerBar() {
+	const navigate = useNavigate()
+
 	const numTable = localStorage.getItem("numTable");
 	const side = localStorage.getItem("side")
 	const whitePlayer = localStorage.getItem("whitePlayer")
 	const blackPlayer = localStorage.getItem("blackPlayer")
+	const sideWin = localStorage.getItem("sideWin")
 
-	const {position, customChessPieces} = useChess();
+	const {customChessPieces} = useChess();
+
+	const handleGetOut = () => {
+		localStorage.setItem("numTable", "0")
+		localStorage.setItem("whitePlayer", "");
+		localStorage.setItem("blackPlayer", "");
+		localStorage.setItem("side", "")
+		localStorage.setItem("sideWin", "")
+		navigate("/")
+	}
 
 	return (<Container>
-		<TableText>TABLE <br/>
+		<TableText>TABLE <TableOut src={getOut} onClick={handleGetOut}/> <br/>
 			<TableNum>
-				{numTable}
+				{sideWin === "" ? numTable : sideWin}
 			</TableNum>
 		</TableText>
 		<InformationContainer>
@@ -154,7 +216,14 @@ export default function PlayerBar() {
 				<Side>
 					<Player>
 						<Avatar color={"black"} image={customChessPieces.k}/>
-						<PlayerName>Bên Đen</PlayerName>
+						{blackPlayer === "" ? <>
+							<WaitingPlayer>
+								<Dot delay="0s" />
+								<Dot delay="0.2s" />
+								<Dot delay="0.4s" />
+							</WaitingPlayer> </> : <>
+							<PlayerName>{blackPlayer}</PlayerName>
+						</>}
 					</Player>
 					<Timer color={"black"} isMain={false}> 10:00 </Timer>
 				</Side>
@@ -162,14 +231,14 @@ export default function PlayerBar() {
 					<Timer color={"white"} isMain={true}> 10:00 </Timer>
 					<Player>
 						<Avatar color={"white"} image={customChessPieces.K}/>
-						<PlayerName>Bên Trắng</PlayerName>
+						<PlayerName>{whitePlayer}</PlayerName>
 					</Player>
 				</Side>
 			</> : <>
 				<Side>
 					<Player>
 						<Avatar color={"black"} image={customChessPieces.k}/>
-						<PlayerName>Bên Đen</PlayerName>
+						<PlayerName>{blackPlayer}</PlayerName>
 					</Player>
 					<Timer color={"black"} isMain={false}> 10:00 </Timer>
 				</Side>
@@ -177,7 +246,7 @@ export default function PlayerBar() {
 					<Timer color={"white"} isMain={true}> 10:00 </Timer>
 					<Player>
 						<Avatar color={"white"} image={customChessPieces.K}/>
-						<PlayerName>Bên Trắng</PlayerName>
+						<PlayerName>whitePl...</PlayerName>
 					</Player>
 				</Side>
 			</>}

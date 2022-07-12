@@ -2,6 +2,7 @@ import styled from "styled-components";
 import InputEnter from "./InputEnter";
 import ButtonEnter from "./ButtonEnter";
 import {useNavigate, useParams} from "react-router-dom";
+import {useEffect} from "react";
 
 const EnterBox = styled.div`
   position: absolute;
@@ -19,6 +20,14 @@ const EnterBox = styled.div`
 export default function UserEnter() {
 	const {state} = useParams()
 	const navigate = useNavigate()
+
+	useEffect(() => {
+		let side = localStorage.getItem("side")
+		if (side !== "") {
+			navigate("/table")
+		}
+	});
+
 	const numTable = localStorage.getItem("numTable")
 
 	const joinRoom = (event) => {
@@ -35,6 +44,9 @@ export default function UserEnter() {
 		} else {
 			let validTable = true // TODO: fetch db and set localStorage whitePlayer
 			if (validTable) {
+				if (player.length > 10) {
+					player = player.substring(0,7) + "..."
+				}
 				localStorage.setItem("blackPlayer", player);
 				localStorage.setItem("side", "black")
 				// TODO: update db numTable, blackPlayer
@@ -63,6 +75,9 @@ export default function UserEnter() {
 				inputDiv.style.setProperty("--c", null)
 			}, 500)
 		} else {
+			if (player.length > 10) {
+				player = player.substring(0,7) + "..."
+			}
 			localStorage.setItem("whitePlayer", player);
 			localStorage.setItem("side", "white")
 			// TODO: numTable = "0" so random numTable (6 digits) and create table

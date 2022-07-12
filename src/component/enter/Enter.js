@@ -2,6 +2,7 @@ import styled from "styled-components";
 import InputEnter from "./InputEnter";
 import ButtonEnter from "./ButtonEnter";
 import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 const EnterBox = styled.div`
   position: absolute;
@@ -14,7 +15,7 @@ const EnterBox = styled.div`
   border-radius: 2rem;
   box-shadow: 0.5rem 1rem black;
   padding-bottom: 3rem;
-  
+
   //@media only screen and (max-width: 1000px) {
   //  padding-bottom: 2rem;
   //}
@@ -29,19 +30,27 @@ const Or = styled.div`
   text-shadow: 0.2rem 0.2rem black;
   margin: 2rem 0 1rem 0;
   user-select: none;
-  
+
   @media only screen and (max-width: 1000px) {
     font-size: 1.5rem;
   }
 `
 
 export default function Enter() {
-	localStorage.setItem("numTable", "0")
-	localStorage.setItem("whitePlayer", "");
-	localStorage.setItem("blackPlayer", "");
-	localStorage.setItem("side", "")
-
 	const navigate = useNavigate()
+
+	useEffect(() => {
+		let side = localStorage.getItem("side")
+		if (side !== "") {
+			navigate("/table")
+		} else {
+			localStorage.setItem("numTable", "0")
+			localStorage.setItem("whitePlayer", "");
+			localStorage.setItem("blackPlayer", "");
+			localStorage.setItem("side", "")
+			localStorage.setItem("sideWin", "")
+		}
+	});
 
 	const handleJoinRoom = (event) => {
 		let element = event.currentTarget
