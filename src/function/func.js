@@ -67,7 +67,7 @@ export const movePieceToTarget = async (event, position, setPosition, setLastMov
 	const data = {
 		position: encodePosition(position)
 	};
-	// console.log(data, position[targetSquare], position[sourceSquare])
+	console.log(data, position[targetSquare], position[sourceSquare])
 	await updateTable(parseInt(localStorage.getItem("numTable")), data);
 	document.querySelectorAll(`div[target-square]`).forEach((x) => {
 		x.parentNode.style.backgroundColor = "";
@@ -91,12 +91,16 @@ export const movePieceToTarget = async (event, position, setPosition, setLastMov
 	}
 };
 
-export const choosePromote = (event, square, position, setPosition, setLastMove) => {
+export const choosePromote = async (event, square, position, setPosition, setLastMove) => {
 	const element = event.currentTarget;
 	position[square] = element.getAttribute("promote-piece");
-	setLastMove(position[square] + square);
-	setPosition({...position});
+	const data = {
+		position: encodePosition(position)
+	};
+	console.log(data, position[square])
+	await updateTable(parseInt(localStorage.getItem("numTable")), data);
 	element.parentNode.parentNode.removeChild(element.parentNode);
+	setLastMove(position[square] + square);
 };
 
 export const newElementTarget = (sourceSquare, targetSquare, isEnemy, side, position, setPosition, setLastMove) => {
@@ -107,7 +111,7 @@ export const newElementTarget = (sourceSquare, targetSquare, isEnemy, side, posi
 	newDiv.style.width = "100%";
 	newDiv.style.height = "100%";
 
-	newDiv.addEventListener("mousedown", (event) => movePieceToTarget(event, position, setPosition, setLastMove));
+	newDiv.addEventListener("mousedown", async (event) => await movePieceToTarget(event, position, setPosition, setLastMove), {once : true});
 
 	var increaseX = column[targetSquare[0]] - column[sourceSquare[0]];
 	var increaseY = parseInt(sourceSquare[1]) - parseInt(targetSquare[1]);
@@ -157,7 +161,7 @@ export const newElementPromoteOption = (side, square, position, setPosition, set
 		newOption.style.backgroundImage = `url(${chessPieces[x]})`;
 		newOption.style.filter = "drop-shadow(8px 8px 1px #700121)";
 		newOption.style.cursor = "pointer";
-		newOption.addEventListener("mousedown", (event) => choosePromote(event, square, position, setPosition, setLastMove));
+		newOption.addEventListener("mousedown", async (event) => await choosePromote(event, square, position, setPosition, setLastMove), {once : true});
 		newDiv.appendChild(newOption);
 	});
 

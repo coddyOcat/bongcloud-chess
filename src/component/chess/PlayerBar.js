@@ -210,7 +210,7 @@ export default function PlayerBar() {
 	return (<Container>
 		<TableText>TABLE <TableOut src={getOut} onClick={handleGetOut}/> <br/>
 			<TableNum>
-				{sideWin === "" ? numTable : sideWin}
+				{sideWin === "" ? numTable : (sideWin + " win").toUpperCase()}
 			</TableNum>
 		</TableText>
 		<InformationContainer>

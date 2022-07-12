@@ -82,7 +82,7 @@ export default function Enter() {
 		}
 	}
 
-	const handleCreateRoom = (event) => {
+	const handleCreateRoom = () => {
 		navigate("/user/create")
 	}
 

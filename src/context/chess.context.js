@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {customPieces} from "../resource/piece";
 import {realtime, updateTable} from "../firebase/db";
 import {onValue, ref} from "firebase/database"
-import {listKingTarget} from "../function/king";
+import {checkKingCheckmate, checkKingMoved, listKingTarget} from "../function/king";
 import {listTarget} from "../function/move";
 import {decodePosition, encodePosition} from "../function/func";
 
@@ -98,6 +98,8 @@ export const ChessProvider = ({children}) => {
 	const [sideMove, setSideMove] = useState("");
 	const [lastMove, setLastMove] = useState("")
 	const [historyMove, setHistoryMove] = useState([]);
+	// eslint-disable-next-line no-unused-vars
+	const [_, setMovedKing] = useState(false);
 
 	useEffect(() => {
 		const valueRef = ref(realtime, numTable)
@@ -136,7 +138,34 @@ export const ChessProvider = ({children}) => {
 			historyMove.push(lastMove);
 			setHistoryMove([...historyMove]);
 		}
+		// eslint-disable-next-line
 	}, [lastMove])
+
+	useEffect(() => {
+		let isWin = false;
+		const WhiteKingSquare = Object.keys(position).find((key) => position[key] === "K");
+		const BlackKingSquare = Object.keys(position).find((key) => position[key] === "k");
+		if (WhiteKingSquare === undefined) {
+			updateTable(parseInt(numTable), {sideWin: "black"})
+			isWin = true;
+		}
+		if (BlackKingSquare === undefined) {
+			updateTable(parseInt(numTable), {sideWin: "white"})
+			isWin = true;
+		}
+
+		if (!isWin) {
+			checkKingMoved(side, position, setMovedKing);
+			const blackWin = checkKingCheckmate("white", position, setPosition, lastMove, setLastMove);
+			const whiteWin = checkKingCheckmate("black", position, setPosition, lastMove, setLastMove);
+			if (blackWin) {
+				updateTable(parseInt(numTable), {sideWin: "black"})
+			} else if (whiteWin) {
+				updateTable(parseInt(numTable), {sideWin: "white"})
+			}
+		}
+		// eslint-disable-next-line
+	}, [position]);
 
 	const onPieceClick = async (event) => {
 		if (sideWin !== "") return;
