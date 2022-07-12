@@ -1,4 +1,4 @@
-import {ChessProvider, useChess} from "../../context/chess.context";
+import {ChessProvider} from "../../context/chess.context";
 import Header from "./Header";
 import PlayerBar from "./PlayerBar";
 import Board from "./Board";
@@ -21,7 +21,7 @@ const ChessContainer = styled.div`
 `
 
 export default function Chess() {
-	const {fetchRoomApi} = useChess()
+	const {fetchRoomApi} = useGlobal()
 
 	useEffect(() => {
 		const fetch = async () => {
