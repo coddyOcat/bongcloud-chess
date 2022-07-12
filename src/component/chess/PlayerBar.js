@@ -159,7 +159,7 @@ const Timer = styled.div`
   font-size: 3rem;
   border-radius: 0.5rem;
 
-  //opacity: 50%;
+  opacity: 70%;
 
   @media only screen and (max-width: 1000px) {
     order: 1;
