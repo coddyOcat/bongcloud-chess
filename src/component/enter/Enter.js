@@ -3,6 +3,8 @@ import InputEnter from "./InputEnter";
 import ButtonEnter from "./ButtonEnter";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import {useGlobal} from "../../context/index.context";
+import {type} from "@testing-library/user-event/dist/type";
 
 const EnterBox = styled.div`
   position: absolute;
@@ -39,6 +41,8 @@ const Or = styled.div`
 export default function Enter() {
 	const navigate = useNavigate()
 
+	const {checkValidRoomApi} = useGlobal()
+
 	useEffect(() => {
 		let side = localStorage.getItem("side")
 		if (side !== "") {
@@ -52,7 +56,7 @@ export default function Enter() {
 		}
 	});
 
-	const handleJoinRoom = (event) => {
+	const handleJoinRoom = async (event) => {
 		let element = event.currentTarget
 		let inputDiv = element.parentNode.firstChild
 		let numTable = inputDiv.value
@@ -64,7 +68,7 @@ export default function Enter() {
 				inputDiv.style.setProperty("--c", null)
 			}, 500)
 		} else {
-			let validTable = true // TODO: fetch db and set localStorage whitePlayer
+			let validTable = await checkValidRoomApi(parseInt((numTable)))
 			if (validTable) {
 				localStorage.setItem("numTable", numTable);
 				navigate("/user/join")

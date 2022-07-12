@@ -22,7 +22,7 @@ export default function UserEnter() {
 	const {state} = useParams()
 	const navigate = useNavigate()
 
-	const {createRoomApi} = useGlobal()
+	const {createRoomApi, checkValidRoomApi, joinRoomApi} = useGlobal()
 
 	useEffect(() => {
 		let side = localStorage.getItem("side")
@@ -33,7 +33,7 @@ export default function UserEnter() {
 
 	const numTable = localStorage.getItem("numTable")
 
-	const joinRoom = (event) => {
+	const joinRoom = async (event) => {
 		let element = event.currentTarget
 		let inputDiv = element.parentNode.firstChild
 		let player = inputDiv.value
@@ -45,15 +45,14 @@ export default function UserEnter() {
 				inputDiv.style.setProperty("--c", null)
 			}, 500)
 		} else {
-			let validTable = true // TODO: fetch db and set localStorage whitePlayer
+			let validTable = await checkValidRoomApi(parseInt(numTable))
 			if (validTable) {
 				if (player.length > 10) {
-					player = player.substring(0,7) + "..."
+					player = player.substring(0, 7) + "..."
 				}
 				localStorage.setItem("blackPlayer", player);
 				localStorage.setItem("side", "black")
-				// TODO: update db numTable, blackPlayer
-				console.log("join", numTable, player)
+				await joinRoomApi()
 				navigate("/table")
 			} else {
 				inputDiv.value = ""
@@ -79,7 +78,7 @@ export default function UserEnter() {
 			}, 500)
 		} else {
 			if (player.length > 10) {
-				player = player.substring(0,7) + "..."
+				player = player.substring(0, 7) + "..."
 			}
 			localStorage.setItem("whitePlayer", player);
 			localStorage.setItem("side", "white")

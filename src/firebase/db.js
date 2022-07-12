@@ -28,12 +28,11 @@ const realtime = getDatabase(app)
 export const createTable = async (numTable, whitePlayer) => {
 	const q = query(collection(firestore, "table"), where("numTable", "==", numTable));
 	const querySnapshot = await getDocs(q);
-	var listz = [];
+	const lists = [];
 	querySnapshot.forEach((doc) => {
-		listz.push(doc.data());
+		lists.push(doc.data());
 	});
-	if (listz.length > 0) {
-		console.log(listz)
+	if (lists.length > 0) {
 		return false;
 	} else {
 		await setDoc(doc(firestore, "table", `${numTable}`), {
@@ -57,3 +56,38 @@ export const createTable = async (numTable, whitePlayer) => {
 	}
 };
 
+export const findNotFullTable = async (numTable) => {
+	const q = query(collection(firestore, "table"), where("numTable", "==", numTable));
+	const querySnapshot = await getDocs(q);
+	const lists = [];
+	querySnapshot.forEach((doc) => {
+		if (doc.data().blackPlayer === "") {
+			lists.push(doc.data());
+		}
+	});
+	return lists.length > 0;
+}
+
+export const updateTable = async (numTable, data) => {
+	const q = query(collection(firestore, "table"), where("numTable", "==", numTable));
+	const querySnapshot = await getDocs(q);
+	const lists = [];
+	querySnapshot.forEach((doc) => {
+		lists.push(doc.data());
+	});
+	if (lists.length > 0) {
+		const baseData = lists[0];
+		await setDoc(doc(firestore, "table", `${numTable}`), {
+			...baseData,
+			...data,
+		});
+		delete baseData.numTable;
+		await set(ref(realtime, `${numTable}`), {
+			...baseData,
+			...data,
+		});
+		return true;
+	} else {
+		return false;
+	}
+};

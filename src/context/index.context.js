@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {createTable} from "../firebase/db";
+import {createTable, findNotFullTable, updateTable} from "../firebase/db";
 
 const GlobalContext = React.createContext();
 
@@ -14,7 +14,6 @@ export const GlobalProvider = ({children}) => {
 		}
 		let status = await createTable(numTable, whitePlayer)
 		while (!status) {
-			console.log(numTable, whitePlayer)
 			numTable = Math.floor(Math.random() * 1000000);
 			if (numTable < 100000) {
 				numTable += 900000;
@@ -24,9 +23,20 @@ export const GlobalProvider = ({children}) => {
 
 		localStorage.setItem("numTable", `${numTable}`)
 	}
+
+	const checkValidRoomApi = async (numTable) => {
+		return await findNotFullTable(numTable)
+	}
+
+	const joinRoomApi = async () => {
+		const blackPlayer = localStorage.getItem("blackPlayer")
+		const numTable = parseInt(localStorage.getItem("numTable"))
+
+		await updateTable(numTable, {blackPlayer: blackPlayer})
+	}
 	return (<GlobalContext.Provider
 		value={{
-			createRoomApi,
+			createRoomApi, checkValidRoomApi, joinRoomApi
 		}}
 	>
 		{children}
