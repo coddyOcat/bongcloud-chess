@@ -3,6 +3,7 @@ import InputEnter from "./InputEnter";
 import ButtonEnter from "./ButtonEnter";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect} from "react";
+import {useGlobal} from "../../context/index.context";
 
 const EnterBox = styled.div`
   position: absolute;
@@ -20,6 +21,8 @@ const EnterBox = styled.div`
 export default function UserEnter() {
 	const {state} = useParams()
 	const navigate = useNavigate()
+
+	const {createRoomApi} = useGlobal()
 
 	useEffect(() => {
 		let side = localStorage.getItem("side")
@@ -63,7 +66,7 @@ export default function UserEnter() {
 		}
 	}
 
-	const createRoom = (event) => {
+	const createRoom = async (event) => {
 		let element = event.currentTarget
 		let inputDiv = element.parentNode.firstChild
 		let player = inputDiv.value
@@ -81,7 +84,7 @@ export default function UserEnter() {
 			localStorage.setItem("whitePlayer", player);
 			localStorage.setItem("side", "white")
 			// TODO: numTable = "0" so random numTable (6 digits) and create table
-			console.log("create", numTable, player)
+			await createRoomApi()
 			navigate("/table")
 		}
 	}
