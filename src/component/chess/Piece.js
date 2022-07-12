@@ -1,7 +1,7 @@
 import {useChess} from "../../context/chess.context";
 
 export default function Piece({square}) {
-	const {position, customChessPieces} = useChess();
+	const {position, customChessPieces, onPieceClick} = useChess();
 
 	const piece = position[square];
 
@@ -13,6 +13,9 @@ export default function Piece({square}) {
 			backgroundImage: `url(${customChessPieces[piece]})`,
 			filter: "drop-shadow(4px 4px 1px #700121)",
 			cursor: "grab",
+		}}
+		onClick={(event) => {
+			onPieceClick(event);
 		}}
 	></div> : <></>)
 

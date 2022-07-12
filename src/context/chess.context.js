@@ -1,5 +1,6 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {customPieces} from "../resource/piece";
+import {fetchTable} from "../firebase/db";
 
 const ChessContext = React.createContext();
 
@@ -19,6 +20,8 @@ export const ChessProvider = ({children}) => {
 	const customChessPieces = customPieces("california");
 
 	// game state
+	const [updateState, setUpdateState] = useState(0)
+
 	const position = {
 		a1: "R",
 		a2: "P",
@@ -85,6 +88,28 @@ export const ChessProvider = ({children}) => {
 		h7: "p",
 		h8: "r",
 	};
+	const [sideWin, setSideWin] = useState(localStorage.getItem("sideWin"));
+	const [sideMove, setSideMove] = useState(localStorage.getItem("sideMove"));
+
+	const fetchRoomApi = async () => {
+		const numTable = parseInt(localStorage.getItem("numTable"))
+
+		const data = await fetchTable(numTable)
+
+		localStorage.setItem("whitePlayer", data.whitePlayer)
+		localStorage.setItem("blackPlayer", data.blackPlayer)
+		localStorage.setItem("sideMove", data.sideMove)
+		setSideMove(data.sideMove)
+		localStorage.setItem("sideWin", data.sideWin)
+		setSideWin(data.sideWin)
+
+		setUpdateState(updateState + 1)
+	}
+
+	const onPieceClick = (event) => {
+		// if (sideWin !== "") return;
+		// if (sideMove !== side) return;
+	}
 
 	return (<ChessContext.Provider
 		value={{
@@ -92,7 +117,11 @@ export const ChessProvider = ({children}) => {
 
 			customChessPieces,
 
-			position
+			position,
+
+			fetchRoomApi,
+
+			onPieceClick
 		}}
 	>
 		{children}

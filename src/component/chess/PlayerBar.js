@@ -205,6 +205,7 @@ export default function PlayerBar() {
 		localStorage.setItem("side", "")
 		localStorage.setItem("sideWin", "")
 		localStorage.setItem("sideMove", "")
+		localStorage.setItem("sideWin", "")
 		navigate("/")
 	}
 

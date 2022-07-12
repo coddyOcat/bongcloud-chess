@@ -54,6 +54,7 @@ export default function Enter() {
 			localStorage.setItem("side", "")
 			localStorage.setItem("sideWin", "")
 			localStorage.setItem("sideMove", "")
+			localStorage.setItem("sideWin", "")
 		}
 	});
 
