@@ -44,7 +44,7 @@ export default function Enter() {
 
 	useEffect(() => {
 		let side = localStorage.getItem("side")
-		if (side !== "") {
+		if (side !== "" && side !== null) {
 			navigate("/table")
 		} else {
 			localStorage.setItem("numTable", "0")
