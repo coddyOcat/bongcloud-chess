@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {createTable, findNotFullTable, updateTable} from "../firebase/db";
 
-const GlobalContext = React.createContext();
+export const GlobalContext = React.createContext();
 
 export const useGlobal = () => useContext(GlobalContext)
 

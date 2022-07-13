@@ -1,6 +1,6 @@
 import {addEatMove, addJumpMove, addLineMove, addLineMoveAndEat, getColumn, getRow,} from "./func";
 
-const PawnMove = (
+export const PawnMove = (
 	square,
 	listTargetS,
 	position,
@@ -48,7 +48,7 @@ const PawnMove = (
 	);
 };
 
-const RookMove = (
+export const RookMove = (
 	square,
 	listTargetS,
 	position,
@@ -107,7 +107,7 @@ const RookMove = (
 	);
 };
 
-const BishopMove = (
+export const BishopMove = (
 	square,
 	listTargetS,
 	position,
@@ -166,7 +166,7 @@ const BishopMove = (
 	);
 };
 
-const KnightMove = (
+export const KnightMove = (
 	square,
 	listTargetS,
 	position,
@@ -196,7 +196,7 @@ const KnightMove = (
 	);
 };
 
-const QueenMove = (
+export const QueenMove = (
 	square,
 	listTargetS,
 	position,
@@ -303,7 +303,7 @@ const QueenMove = (
 	);
 };
 
-const KingMove = (
+export const KingMove = (
 	square,
 	listTargetS,
 	position,

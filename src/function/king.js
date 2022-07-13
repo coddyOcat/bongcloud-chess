@@ -1,6 +1,6 @@
 import { addJumpMove, columnKey, getColumn, getRow } from "./func";
 
-const addLineBlock = (listBlock, position) => {
+export const addLineBlock = (listBlock, position) => {
 	const listBlockz = [];
 	for (let i = 0; i < listBlock.length; i++) {
 		let block = listBlock[i];
@@ -21,7 +21,7 @@ const addLineBlock = (listBlock, position) => {
 	return listBlockz;
 };
 
-const addBlock = (listBlock, position) => {
+export const addBlock = (listBlock, position) => {
 	const listBlockz = [];
 	for (let i = 0; i < listBlock.length; i++) {
 		let block = listBlock[i];
@@ -35,7 +35,7 @@ const addBlock = (listBlock, position) => {
 	return listBlockz;
 };
 
-const PawnBlock = (square, side, position) => {
+export const PawnBlock = (square, side, position) => {
 	var step;
 	if (side === "white") {
 		step = 1;
@@ -50,7 +50,7 @@ const PawnBlock = (square, side, position) => {
 	return addBlock(listBlock, position);
 };
 
-const RookBlock = (square, side, position) => {
+export const RookBlock = (square, side, position) => {
 	var listBlock = [];
 	var listBlockz;
 	listBlockz = [...Array(8).keys()].map((x) => {
@@ -92,7 +92,7 @@ const RookBlock = (square, side, position) => {
 	return listBlock;
 };
 
-const BishopBlock = (square, side, position) => {
+export const BishopBlock = (square, side, position) => {
 	var listBlock = [];
 	var listBlockz;
 	listBlockz = [...Array(8).keys()].map((x) => {
@@ -134,7 +134,7 @@ const BishopBlock = (square, side, position) => {
 	return listBlock;
 };
 
-const KnightBlock = (square, side, position) => {
+export const KnightBlock = (square, side, position) => {
 	var listBlock = [
 		getColumn(square, -2) + getRow(square, -1),
 		getColumn(square, -2) + getRow(square, 1),
@@ -149,7 +149,7 @@ const KnightBlock = (square, side, position) => {
 	return addBlock(listBlock, position);
 };
 
-const QueenBlock = (square, side, position) => {
+export const QueenBlock = (square, side, position) => {
 	var listBlock = [];
 	var listBlockz;
 	listBlockz = [...Array(8).keys()].map((x) => {
@@ -227,7 +227,7 @@ const QueenBlock = (square, side, position) => {
 	return listBlock;
 };
 
-const KingBlock = (square, side, position) => {
+export const KingBlock = (square, side, position) => {
 	var listBlock = [
 		getColumn(square, -1) + getRow(square, -1),
 		getColumn(square, -1) + getRow(square, 0),
@@ -244,7 +244,7 @@ const KingBlock = (square, side, position) => {
 
 // const Castle = () => {};
 
-const KingMove = (
+export const KingMove = (
 	square,
 	listTargetS,
 	position,
@@ -282,7 +282,7 @@ const KingMove = (
 	);
 };
 
-const EnemyBlock = (side, position) => {
+export const EnemyBlock = (side, position) => {
 	const listBlock = [];
 
 	const arrInd = [...Array(8).keys()];
@@ -367,7 +367,7 @@ const EnemyBlock = (side, position) => {
 	return listBlock;
 };
 
-const checkInBlock = (square, side, position) => {
+export const checkInBlock = (square, side, position) => {
 	return EnemyBlock(side, position)
 		.map((block) => {
 			if (block.includes(square)) {

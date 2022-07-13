@@ -67,7 +67,6 @@ export const movePieceToTarget = async (event, position, setPosition, setLastMov
 	const data = {
 		position: encodePosition(position)
 	};
-	console.log(data, position[targetSquare], position[sourceSquare])
 	await updateTable(parseInt(localStorage.getItem("numTable")), data);
 	document.querySelectorAll(`div[target-square]`).forEach((x) => {
 		x.parentNode.style.backgroundColor = "";
@@ -97,7 +96,6 @@ export const choosePromote = async (event, square, position, setPosition, setLas
 	const data = {
 		position: encodePosition(position)
 	};
-	console.log(data, position[square])
 	await updateTable(parseInt(localStorage.getItem("numTable")), data);
 	element.parentNode.parentNode.removeChild(element.parentNode);
 	setLastMove(position[square] + square);
