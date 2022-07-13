@@ -24,7 +24,7 @@ export const ChessProvider = ({children}) => {
 	const customChessPieces = customPieces("california");
 
 	// game state
-	const numTable = localStorage.getItem("numTable")
+	let numTable = localStorage.getItem("numTable")
 	const [whitePlayer, setWhitePlayer] = useState("")
 	const [blackPlayer, setBlackPlayer] = useState("")
 	const side = localStorage.getItem("side")
@@ -102,6 +102,9 @@ export const ChessProvider = ({children}) => {
 	const [_, setMovedKing] = useState(false);
 
 	useEffect(() => {
+		if (numTable.length === 0) {
+			numTable = "123456"
+		}
 		const valueRef = ref(realtime, numTable)
 		onValue(valueRef, (snapshot) => {
 			const data = snapshot.val()
