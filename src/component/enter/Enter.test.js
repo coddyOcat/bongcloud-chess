@@ -33,7 +33,7 @@ it('Render enter page with side', () => {
 	act(() => {
 		container.render(<Enter/>)
 	})
-	expect(mockedUsedNavigate).toHaveBeenCalled();
+	expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
 })
 
 it('Render enter page with null side', () => {
