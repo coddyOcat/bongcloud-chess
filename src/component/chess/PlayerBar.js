@@ -158,9 +158,10 @@ const Timer = styled.div`
   color: ${props => props.color === `white` ? `black` : `white`};
   font-weight: bolder;
   font-size: 3rem;
-  border-radius: 0.5rem;
+  border-radius: 0.5rem;	
 
   opacity: ${props => props.isTiming ? `100%` : `50%`};
+  text-transform: ${props => props.isTiming ? `uppercase` : `lowercase`};
 
   @media only screen and (max-width: 1000px) {
     order: 1;
@@ -227,10 +228,10 @@ export default function PlayerBar() {
 							<PlayerName>{blackPlayer}</PlayerName>
 						</>}
 					</Player>
-					<Timer color={"black"} isMain={false} isTiming={sideMove === "black"}> 10:00 </Timer>
+					<Timer color={"black"} isMain={false} isTiming={sideMove === "black"}> turn </Timer>
 				</Side>
 				<Side>
-					<Timer color={"white"} isMain={true} isTiming={sideMove === "white"}> 10:00 </Timer>
+					<Timer color={"white"} isMain={true} isTiming={sideMove === "white"}> turn </Timer>
 					<Player>
 						<Avatar color={"white"} image={customChessPieces.K}/>
 						<PlayerName>{whitePlayer}</PlayerName>
@@ -242,10 +243,10 @@ export default function PlayerBar() {
 						<Avatar color={"white"} image={customChessPieces.K}/>
 						<PlayerName>{whitePlayer}</PlayerName>
 					</Player>
-					<Timer color={"white"} isMain={false} isTiming={sideMove === "white"}> 10:00 </Timer>
+					<Timer color={"white"} isMain={false} isTiming={sideMove === "white"}> turn </Timer>
 				</Side>
 				<Side>
-					<Timer color={"black"} isMain={true} isTiming={sideMove === "black"}> 10:00 </Timer>
+					<Timer color={"black"} isMain={true} isTiming={sideMove === "black"}> turn </Timer>
 					<Player>
 						<Avatar color={"black"} image={customChessPieces.k}/>
 						<PlayerName>{blackPlayer}</PlayerName>
